@@ -37,6 +37,8 @@ function fcn_drawTire(tire,varargin)
 
 % Revision history:
 % 2020_11_02 - wrote the code
+% 2022_08_25 
+% -- fixed bug with usage field where it throws an error if field not there
 
 
 %% Set up for debugging
@@ -114,7 +116,7 @@ end
 %  |_|  |_|\__,_|_|_| |_|
 %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-tire_type = 1;
+tire_type = 3;
 
 switch tire_type
     case 1 % Simple square tire
@@ -209,7 +211,7 @@ else % Update the line positions
     end   
     
     % Plot the tire usage?
-    if ~isempty(tire.usage)
+    if isfield(tire,'usage') && ~isempty(tire.usage)
         if isnumeric(tire.usage)
             plot_str = convertToColor(tire.usage);
             set(handles.h_tires.(tire.name).body,'Color',plot_str);
@@ -335,7 +337,7 @@ else % Update the line positions
     
         
     % Plot the tire usage?
-    if ~isempty(tire.usage)
+    if isfield(tire,'usage') && ~isempty(tire.usage)
         if isnumeric(tire.usage)
             plot_str = convertToColor(tire.usage);
             set(handles.h_tires.(tire.name).body,'Color',plot_str);
@@ -374,7 +376,7 @@ if flag_make_new_plot
         -tire.width/2 -tire_radius];
    
     
-    % Draw dire
+    % Draw tire
     width = tire.width;    
     t = [(0:0.1:1)*width];
     r = tire_radius*(sin(t*pi/width)).^0.03;
@@ -458,7 +460,7 @@ else % Update the line positions
     set(handles.h_tires.(tire.name).spokes_transform_object,'Matrix',M);
     
     % Plot the tire usage?
-    if ~isempty(tire.usage)
+    if isfield(tire,'usage') && ~isempty(tire.usage)
         if isnumeric(tire.usage)
             plot_str = convertToColor(tire.usage);
             set(handles.h_tires.(tire.name).body,'Color',plot_str);
