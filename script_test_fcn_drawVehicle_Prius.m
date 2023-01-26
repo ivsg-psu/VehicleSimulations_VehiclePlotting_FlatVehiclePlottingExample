@@ -30,7 +30,7 @@ end
 vehicle = fcn_vehicle_initVehicle;
 if vehicle.tire_type ~= 1
     vehicle = fcn_vehicle_initVehicle;
-    for angle = 0:1:180
+    for angle = 0:2:180
         for i_tire = 1:4
             vehicle.tire(i_tire).rolling_angle = angle*pi/180;
         end
