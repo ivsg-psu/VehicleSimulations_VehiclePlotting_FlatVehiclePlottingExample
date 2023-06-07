@@ -81,13 +81,16 @@ end
 
 flag_make_new_plot = 0; % Default is not to make a new plot
 if 2 == nargin
-    fig_num = varargin{1};
-    figure(fig_num);
-    
-    % Check to see if the figure has user data within it already
-    handles = get(fig_num,'UserData');
-    if isempty(handles)
-        flag_make_new_plot = 1;
+    temp = varargin{1};
+    if ~isempty(temp)
+        fig_num = temp;
+        figure(fig_num);
+
+        % Check to see if the figure has user data within it already
+        handles = get(fig_num,'UserData');
+        if isempty(handles)
+            flag_make_new_plot = 1;
+        end
     end
 else
     fig = gcf; % create new figure with next default index
@@ -185,13 +188,13 @@ if flag_make_new_plot
     
     
     % Make handles to each of the plotted objects
-    h_robot_body = plot_box(0,0,body_rotated_translated,[0.1 0.1 0.1]);  % Body
+    h_vehicle_body = plot_box(0,0,body_rotated_translated,[0.1 0.1 0.1]);  % Body
     h_vehicle_exterior_decorators = plot(exterior_decorators_rotated_translated(:,1),exterior_decorators_rotated_translated(:,2),'k-');
     h_vehicle_interior_decorators = plot(interior_decorators_rotated_translated(:,1),interior_decorators_rotated_translated(:,2),'-','Color',[0.5 0.5 0.5]);
     
     % Make all the handles be parents of a transform object (makes
     % rendering fast)
-    set(h_robot_body,'Parent',handles.transform_ground_to_body);
+    set(h_vehicle_body,'Parent',handles.transform_ground_to_body);
     set(h_vehicle_exterior_decorators,'Parent',handles.transform_ground_to_body);
     set(h_vehicle_interior_decorators,'Parent',handles.transform_ground_to_body);
     
@@ -210,9 +213,9 @@ if flag_make_new_plot
             % Grab the tire
             tire = vehicle.tire(i_tire);
             
-            % Steer the front tires?
+            % Steer the front tires (tires 1 and 2)?
             if i_tire>2
-                tire.orientation_angle = 0; % the angle of the tire [rad]
+                tire.orientation_angle = 0; % the angle of the rear tires [rad]
             else
                 tire.orientation_angle = vehicle.steeringAngle_radians; % the angle of the tire [rad]
             end
